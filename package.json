@@ -5,6 +5,10 @@
   "workspaces": [
     "aws-js-fe/"
   ],
+  "scripts": {
+    "fe:preview": "npm run preview --workspace=@my-store-app/fe",
+    "fe:deploy": "npm run cloudfront:build:deploy:nc --workspace=@my-store-app/fe"
+  },
   "main": "index.js",
   "devDependencies": {
     "serverless": "^3.38.0"
