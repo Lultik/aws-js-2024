@@ -3,11 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "workspaces": [
-    "aws-js-fe/"
+    "aws-js-fe/",
+    "aws-js-be/**/*"
   ],
   "scripts": {
     "fe:preview": "npm run preview --workspace=@my-store-app/fe",
-    "fe:deploy": "npm run cloudfront:build:deploy:nc --workspace=@my-store-app/fe"
+    "fe:deploy": "npm run cloudfront:build:deploy:nc --workspace=@my-store-app/fe",
+    "be:deploy": "npm run deploy --workspace=@my-store-app/products"
   },
   "main": "index.js",
   "devDependencies": {
