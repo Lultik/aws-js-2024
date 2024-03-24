@@ -1,0 +1,14 @@
+{
+  "name": "@my-store-app/main",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "aws-js-fe/"
+  ],
+  "main": "index.js",
+  "devDependencies": {
+    "serverless": "^3.38.0"
+  },
+  "description": "AWS training repo",
+  "license": "ISC"
+}
