@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 
-import { getProductsById, getProductsList } from 'src/functions';
+import { getProductsById, getProductsList } from '@functions/index';
 
 const serverlessConfiguration: AWS = {
   service: 'products',
@@ -18,14 +18,35 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      PRODUCTS_TABLE: 'aws-js-product-service',
+    },
+    iam: {
+      role: {
+        statements: [
+          {
+            Effect: 'Allow',
+            Action: [
+              'dynamodb:DescribeTable',
+              'dynamodb:Query',
+              'dynamodb:Scan',
+              'dynamodb:GetItem',
+              'dynamodb:PutItem',
+              'dynamodb:UpdateItem',
+              'dynamodb:DeleteItem',
+            ],
+            Resource: 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PRODUCTS_TABLE}',
+          }
+        ]
+      }
     },
   },
   functions: {getProductsList, getProductsById},
   package: {individually: true},
   custom: {
     autoswagger: {
-      typefiles: ['./src/types/Product.ts'],
+      typefiles: ['./src/models/Product.ts'],
       swaggerPath: 'doc',
+      generateSwaggerOnDeploy: false,
     },
     esbuild: {
       bundle: true,

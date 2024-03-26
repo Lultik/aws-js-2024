@@ -7,3 +7,5 @@ export interface Product {
 }
 
 export type ProductList = Array<Product>;
+
+export type AvailableProducts = Product & { count: number; }

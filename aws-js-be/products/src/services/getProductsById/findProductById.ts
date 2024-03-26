@@ -1,5 +1,5 @@
+import { Product } from "@models/Product";
 import { products } from '@mocks/data'
-import { Product } from "../../types/Product";
 import { formatJSONResponse, internalError, notFound, ValidatedEventAPIGatewayProxyEvent } from "@libs/api-gateway";
 
 export const findProductById: ValidatedEventAPIGatewayProxyEvent<Product> = async (event) => {
