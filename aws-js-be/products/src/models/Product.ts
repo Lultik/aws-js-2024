@@ -6,6 +6,12 @@ export interface Product {
   imageName: string;
 }
 
+export interface Stock {
+  id: string;
+  count: number;
+}
+
 export type ProductList = Array<Product>;
 
-export type AvailableProducts = Product & { count: number; }
+export type AvailableProduct = Product & Stock;
+

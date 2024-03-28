@@ -1,18 +1,28 @@
-import { ScanCommand } from "@aws-sdk/lib-dynamodb";
+import { GetCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { formatJSONResponse, internalError, ValidatedEventAPIGatewayProxyEvent } from "@libs/api-gateway";
-import { Product } from "@models/index";
-import { dynamoDB, tables } from "@dynamodb/index";
+import { AvailableProduct, Product } from "@models/index";
+import { dynamoDB } from "@dynamodb/index";
 
-
-export const getProductsList: ValidatedEventAPIGatewayProxyEvent<Product> = async () => {
+export const getProductsList: ValidatedEventAPIGatewayProxyEvent<AvailableProduct[]> = async () => {
   try {
     const getCommand = new ScanCommand({
-      TableName: tables.Products,
+      TableName: process.env.PRODUCTS_TABLE,
       ConsistentRead: true,
     });
-    const getResponse = await dynamoDB.send(getCommand);
+    const {Items} = await dynamoDB.send(getCommand);
 
-    return formatJSONResponse(getResponse.Items);
+    const products: AvailableProduct[] = await Promise.all(Items.map(async (product: Product): Promise<AvailableProduct> => {
+      const getCountCommand = new GetCommand({
+        TableName: process.env.STOCK_TABLE,
+        Key: {
+          id: product.id
+        }
+      });
+      const {Item: stock} = await dynamoDB.send(getCountCommand);
+      return {...product, ...stock} as AvailableProduct;
+    }))
+
+    return formatJSONResponse(products);
   } catch (err) {
     return internalError(err)
   }
