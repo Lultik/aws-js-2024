@@ -1,3 +1,12 @@
-export { default as getProductsList } from './getProductsList';
-export { default as getProductsById } from './getProductsById';
-export { default as seedDatabase } from './seedDatabase';
+import { default as getProductsList } from './getProductsList';
+import { default as getProductsById } from './getProductsById';
+import { default as createProduct } from './createProduct';
+import { default as seedDatabase } from './seedDatabase';
+
+export const functions = {
+  getProductsList,
+  getProductsById,
+  createProduct,
+
+  seedDatabase,
+}

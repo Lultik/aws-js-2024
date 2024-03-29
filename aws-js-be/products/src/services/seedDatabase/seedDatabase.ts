@@ -22,8 +22,8 @@ export const seedDatabase = async () => {
       await dynamoDB.send(putStockCommand);
 
     }
-    return formatJSONResponse({message: 'Done!'})
+    return formatJSONResponse._200({message: 'Done!'})
   } catch (err) {
-    console.log('Error', err)
+    return formatJSONResponse._500(err)
   }
 }

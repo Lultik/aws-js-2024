@@ -1,7 +1,8 @@
 import type { AWS } from '@serverless/typescript';
 import 'dotenv/config';
 
-import { getProductsById, getProductsList, seedDatabase } from '@functions/index';
+import { functions } from '@functions/index';
+import { resources } from "./serverless/index";
 
 const serverlessConfiguration: AWS = {
   service: 'products',
@@ -44,13 +45,14 @@ const serverlessConfiguration: AWS = {
       }
     },
   },
-  functions: {getProductsList, getProductsById, seedDatabase},
+  functions,
+  resources,
   package: {individually: true},
   custom: {
     autoswagger: {
       typefiles: ['./src/models/Product.ts'],
       swaggerPath: 'doc',
-      generateSwaggerOnDeploy: false,
+      generateSwaggerOnDeploy: true,
     },
     esbuild: {
       bundle: true,
@@ -62,54 +64,6 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
-  },
-  resources: {
-    Resources: {
-      ProductsTable: {
-        Type: "AWS::DynamoDB::Table",
-        Properties: {
-          TableName: '${self:provider.environment.PRODUCTS_TABLE}',
-          AttributeDefinitions: [
-            {
-              AttributeName: "id",
-              AttributeType: "S"
-            }
-          ],
-          KeySchema: [
-            {
-              AttributeName: "id",
-              KeyType: "HASH"
-            }
-          ],
-          ProvisionedThroughput: {
-            ReadCapacityUnits: 1,
-            WriteCapacityUnits: 1
-          },
-        }
-      },
-      StockTable: {
-        Type: "AWS::DynamoDB::Table",
-        Properties: {
-          TableName: '${self:provider.environment.STOCK_TABLE}',
-          AttributeDefinitions: [
-            {
-              AttributeName: "id",
-              AttributeType: "S"
-            }
-          ],
-          KeySchema: [
-            {
-              AttributeName: "id",
-              KeyType: "HASH"
-            }
-          ],
-          ProvisionedThroughput: {
-            ReadCapacityUnits: 1,
-            WriteCapacityUnits: 1
-          },
-        }
-      }
-    }
   }
 };
 

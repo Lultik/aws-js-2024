@@ -1,5 +1,5 @@
 import { GetCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
-import { formatJSONResponse, internalError, ValidatedEventAPIGatewayProxyEvent } from "@libs/api-gateway";
+import { formatJSONResponse, ValidatedEventAPIGatewayProxyEvent } from "@libs/api-gateway";
 import { AvailableProduct, Product } from "@models/index";
 import { dynamoDB } from "@dynamodb/index";
 
@@ -22,8 +22,8 @@ export const getProductsList: ValidatedEventAPIGatewayProxyEvent<AvailableProduc
       return {...product, ...stock} as AvailableProduct;
     }))
 
-    return formatJSONResponse(products);
+    return formatJSONResponse._200(products);
   } catch (err) {
-    return internalError(err)
+    return formatJSONResponse._500(err)
   }
 };
