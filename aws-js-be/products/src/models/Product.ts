@@ -15,3 +15,9 @@ export type ProductList = Array<Product>;
 
 export type AvailableProduct = Product & Stock;
 
+export interface CreateProductBody {
+  description: string;
+  title: string;
+  price: number;
+  count?: number;
+}

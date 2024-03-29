@@ -8,6 +8,7 @@ const createProduct = {
         method: 'post',
         path: 'products/',
         cors: true,
+        bodyType: 'CreateProductBody',
         responses: {
           default: {},
           201: {
@@ -16,7 +17,6 @@ const createProduct = {
           },
           400: {
             description: 'Body is not valid',
-            bodyType: 'string',
           },
           500: {
             description: 'Internal server error',

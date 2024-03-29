@@ -7,6 +7,7 @@ import { dynamoDB } from "@dynamodb/index";
 import { CreateProductBodySchema } from "../../schemas/CreatePostBody.schema";
 
 export const createProduct: ValidatedEventAPIGatewayProxyEvent<AvailableProduct> = async (event) => {
+  console.log(event);
   try {
     const {error, value} = CreateProductBodySchema.validate(event.body)
 

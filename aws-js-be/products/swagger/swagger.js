@@ -86,7 +86,17 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Body required in the request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateProductBody"
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Product created",
@@ -95,10 +105,7 @@
             }
           },
           "400": {
-            "description": "Body is not valid",
-            "schema": {
-              "$ref": "#/definitions/string"
-            }
+            "description": "Body is not valid"
           },
           "500": {
             "description": "Internal server error"
@@ -181,6 +188,34 @@
         }
       ],
       "title": "AvailableProduct"
+    },
+    "CreateProductBody": {
+      "properties": {
+        "description": {
+          "title": "CreateProductBody.description",
+          "type": "string"
+        },
+        "title": {
+          "title": "CreateProductBody.title",
+          "type": "string"
+        },
+        "price": {
+          "title": "CreateProductBody.price",
+          "type": "number"
+        },
+        "count": {
+          "title": "CreateProductBody.count",
+          "type": "number"
+        }
+      },
+      "required": [
+        "description",
+        "title",
+        "price"
+      ],
+      "additionalProperties": false,
+      "title": "CreateProductBody",
+      "type": "object"
     }
   },
   "securityDefinitions": {}
