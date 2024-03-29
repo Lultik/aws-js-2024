@@ -9,7 +9,8 @@
   "scripts": {
     "fe:preview": "npm run preview --workspace=@my-store-app/fe",
     "fe:deploy": "npm run cloudfront:build:deploy:nc --workspace=@my-store-app/fe",
-    "be:deploy": "npm run deploy --workspace=@my-store-app/products"
+    "be:offline": "npm run offline --workspace=@my-store-app/products",
+    "be:deploy:products": "npm run deploy --workspace=@my-store-app/products"
   },
   "main": "index.js",
   "devDependencies": {
