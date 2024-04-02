@@ -6,7 +6,8 @@ export default {
     {
       http: {
         method: 'get',
-        path: 'hello',
+        path: 'import',
+        cors: true,
       },
     },
   ],
