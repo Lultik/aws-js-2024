@@ -1,5 +1,5 @@
 import { formatJSONResponse, ValidatedEventAPIGatewayProxyEvent } from "@libs/api-gateway";
-import { GetObjectCommand, HeadObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 export const importProductsFile: ValidatedEventAPIGatewayProxyEvent<null> = async (event) => {
@@ -9,10 +9,7 @@ export const importProductsFile: ValidatedEventAPIGatewayProxyEvent<null> = asyn
 
     const commandParams = {Bucket: process.env.S3_BUCKET_NAME, Key: `uploaded/${fileName}`}
 
-    const cmd = new HeadObjectCommand(commandParams);
-    await client.send(cmd);
-
-    const command = new GetObjectCommand(commandParams);
+    const command = new PutObjectCommand(commandParams);
 
     const presignedURL = await getSignedUrl(client, command, {expiresIn: 3600});
 

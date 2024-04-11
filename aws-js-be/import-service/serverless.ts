@@ -48,6 +48,22 @@ const serverlessConfiguration: AWS = {
           BucketName: '${self:provider.environment.S3_BUCKET_NAME}',
           VersioningConfiguration: {
             Status: 'Enabled'
+          },
+          CorsConfiguration: {
+            CorsRules: [
+              {
+                "AllowedHeaders": [
+                  "*"
+                ],
+                "AllowedMethods": [
+                  "GET", "PUT"
+                ],
+                "AllowedOrigins": [
+                  "*"
+                ],
+                "MaxAge": 3600
+              }
+            ]
           }
         },
       },
