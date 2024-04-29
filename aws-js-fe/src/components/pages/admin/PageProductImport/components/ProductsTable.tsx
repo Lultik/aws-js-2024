@@ -8,15 +8,12 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { formatAsPrice } from "~/utils/utils";
-import {
-  useAvailableProducts,
-  useDeleteAvailableProduct,
-  useInvalidateAvailableProducts,
-} from "~/queries/products";
+import { useDeleteAvailableProduct, useInvalidateAvailableProducts, useProductsList, } from "~/queries/products";
+import { AvailableProduct } from "~/models/Product";
 
 export default function ProductsTable() {
-  const { data = [] } = useAvailableProducts();
-  const { mutate: deleteAvailableProduct } = useDeleteAvailableProduct();
+  const {data = []} = useProductsList();
+  const {mutate: deleteAvailableProduct} = useDeleteAvailableProduct();
   const invalidateAvailableProducts = useInvalidateAvailableProducts();
 
   return (
@@ -32,7 +29,7 @@ export default function ProductsTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((product) => (
+          {(data as AvailableProduct[]).map((product) => (
             <TableRow key={product.id}>
               <TableCell component="th" scope="row">
                 {product.title}

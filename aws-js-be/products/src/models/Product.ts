@@ -3,7 +3,6 @@ export interface Product {
   title: string;
   id: string;
   price: number;
-  imageName: string;
 }
 
 export interface Stock {

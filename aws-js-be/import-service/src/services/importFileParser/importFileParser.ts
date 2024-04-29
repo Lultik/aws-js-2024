@@ -1,6 +1,8 @@
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { SendMessageCommand } from "@aws-sdk/client-sqs";
 import { S3Event } from "aws-lambda/trigger/s3";
 import { moveParsedFile } from "@services/importFileParser/moveParsedFile";
+import { sqsClient } from "../../sqs";
 
 const csv = require('csv-parser');
 
@@ -18,8 +20,12 @@ export const importFileParser = async (event: S3Event) => {
     const data = await client.send(getCommand);
 
     await data.Body.pipe(csv())
-      .on('data', (row) => {
-        console.log(row); // This will log each row of your csv file
+      .on('data', async (row) => {
+        const params = {
+          QueueUrl: process.env.SQS_URL,
+          MessageBody: JSON.stringify(row),
+        };
+        await sqsClient.send(new SendMessageCommand(params));
       })
       .on('end', () => {
         console.log('CSV file successfully processed');
