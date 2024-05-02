@@ -11,12 +11,14 @@ const serverlessConfiguration: AWS = {
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
+    region: 'eu-central-1',
+    profile: 'aws-js',
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
     },
     environment: {
-      GITHUB: process.env.GITHUB,
+      [process.env.GITHUB]: 'TEST_PASSWORD',
     },
   },
   // import the function via paths

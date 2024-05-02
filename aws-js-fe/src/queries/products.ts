@@ -57,7 +57,7 @@ export function useUpsertAvailableProduct() {
   return useMutation((values: AvailableProduct) =>
     axios.post<AvailableProduct>(`${API_PATHS.product}/products`, values, {
       headers: {
-        // Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
+        Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
       },
     })
   );
@@ -67,7 +67,7 @@ export function useDeleteAvailableProduct() {
   return useMutation((id: string) =>
     axios.delete(`${API_PATHS.product}/products/${id}`, {
       headers: {
-        // Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
+        Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
       },
     })
   );
