@@ -2,6 +2,7 @@ import type { AWS } from '@serverless/typescript';
 import 'dotenv/config'
 
 import { functions } from "@functions/index";
+import * as process from "node:process";
 
 const serverlessConfiguration: AWS = {
   service: 'import-service',
@@ -23,6 +24,7 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
       S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
+      SQS_URL: process.env.SQS_URL
     },
     iam: {
       role: {
@@ -34,6 +36,13 @@ const serverlessConfiguration: AWS = {
               's3-object-lambda:*'
             ],
             Resource: 'arn:aws:s3:::${self:provider.environment.S3_BUCKET_NAME}/*',
+          },
+          {
+            Effect: "Allow",
+            Action: [
+              "sqs:*"
+            ],
+            Resource: "*"
           }
         ]
       }

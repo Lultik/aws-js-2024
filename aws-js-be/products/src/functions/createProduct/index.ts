@@ -6,7 +6,7 @@ const createProduct = {
     {
       http: {
         method: 'post',
-        path: 'products/',
+        path: 'products',
         cors: true,
         bodyType: 'CreateProductBody',
         responses: {

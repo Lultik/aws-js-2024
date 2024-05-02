@@ -3,6 +3,7 @@ import 'dotenv/config';
 
 import { functions } from '@functions/index';
 import { resources } from "./serverless/index";
+import * as process from "node:process";
 
 const serverlessConfiguration: AWS = {
   service: 'products',
@@ -23,6 +24,8 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
       PRODUCTS_TABLE: process.env.PRODUCTS_TABLE,
       STOCK_TABLE: process.env.STOCK_TABLE,
+      SQS_URL: process.env.SQS_URL,
+      TOPIC_ARN: process.env.TOPIC_ARN
     },
     iam: {
       role: {
@@ -40,6 +43,13 @@ const serverlessConfiguration: AWS = {
               'dynamodb:BatchWriteItem'
             ],
             Resource: 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/*',
+          },
+          {
+            Effect: 'Allow',
+            Action: [
+              'sns:*'
+            ],
+            Resource: '*'
           }
         ]
       }
@@ -52,7 +62,7 @@ const serverlessConfiguration: AWS = {
     autoswagger: {
       typefiles: ['./src/models/Product.ts'],
       swaggerPath: 'doc',
-      generateSwaggerOnDeploy: true,
+      generateSwaggerOnDeploy: false,
     },
     esbuild: {
       bundle: true,

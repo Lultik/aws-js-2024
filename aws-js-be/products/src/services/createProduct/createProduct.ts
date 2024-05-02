@@ -1,15 +1,14 @@
 import { PutCommand } from "@aws-sdk/lib-dynamodb";
 import { v4 as uuidv4 } from 'uuid';
 
-import { formatJSONResponse, ValidatedEventAPIGatewayProxyEvent } from "@libs/api-gateway";
+import { formatJSONResponse } from "@libs/api-gateway";
 import { AvailableProduct } from "@models/index";
 import { dynamoDB } from "@dynamodb/index";
 import { CreateProductBodySchema } from "../../schemas/CreatePostBody.schema";
 
-export const createProduct: ValidatedEventAPIGatewayProxyEvent<AvailableProduct> = async (event) => {
-  console.log(event);
+export const createProduct = async (body?: AvailableProduct) => {
   try {
-    const {error, value} = CreateProductBodySchema.validate(event.body)
+    const {error, value} = CreateProductBodySchema.validate(body)
 
     if (error) {
       return formatJSONResponse._400(error.details.map((err) => err.message).join(', '))
@@ -35,7 +34,7 @@ export const createProduct: ValidatedEventAPIGatewayProxyEvent<AvailableProduct>
     await dynamoDB.send(createProductCommand);
     await dynamoDB.send(createStockCommand);
 
-    return formatJSONResponse._200({id, count, ...product});
+    return formatJSONResponse._201({id, count, ...product});
   } catch (err) {
     return formatJSONResponse._500(err);
   }
