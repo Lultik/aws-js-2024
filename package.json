@@ -11,7 +11,8 @@
     "fe:deploy": "npm run cloudfront:build:deploy:nc --workspace=@my-store-app/fe",
     "be:offline": "npm run offline --workspace=@my-store-app/products",
     "be:deploy:products": "npm run deploy --workspace=@my-store-app/products",
-    "be:deploy:import-service": "npm run deploy --workspace=@my-store-app/import-service"
+    "be:deploy:import-service": "npm run deploy --workspace=@my-store-app/import-service",
+    "be:deploy:authorization-service": "npm run deploy --workspace=@my-store-app/authorization-service"
   },
   "main": "index.js",
   "devDependencies": {
