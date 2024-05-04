@@ -7,16 +7,27 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { theme } from "~/theme";
+import axios from "axios";
+
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response.status === 401 || error.response.status === 403) {
+      alert(`${error.response.status}: ${error.response?.data?.message || 'Error'}`);
+    }
+    return Promise.reject(error);
+  }
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { refetchOnWindowFocus: false, retry: false, staleTime: Infinity },
+    queries: {refetchOnWindowFocus: false, retry: false, staleTime: Infinity},
   },
 });
 
 if (import.meta.env.DEV) {
-  const { worker } = await import("./mocks/browser");
-  worker.start({ onUnhandledRequest: "bypass" });
+  const {worker} = await import("./mocks/browser");
+  worker.start({onUnhandledRequest: "bypass"});
 }
 
 const container = document.getElementById("app");
@@ -27,10 +38,10 @@ root.render(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <App />
+          <CssBaseline/>
+          <App/>
         </ThemeProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools initialIsOpen={false}/>
       </QueryClientProvider>
     </BrowserRouter>
   </React.StrictMode>
