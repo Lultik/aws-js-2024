@@ -81,7 +81,7 @@ export default function Header() {
             </Menu>
           </div>
         )}
-        {/*<Cart />*/}
+        <Cart />
       </Toolbar>
     </AppBar>
   );

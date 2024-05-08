@@ -83,7 +83,7 @@ const serverlessConfiguration: AWS = {
             "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
             "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
           },
-          ResponseType: "ACCESS_DENIED",
+          ResponseType: "DEFAULT_4XX",
           RestApiId: { Ref: "ApiGatewayRestApi" },
         },
       },
@@ -91,11 +91,6 @@ const serverlessConfiguration: AWS = {
   },
   package: {individually: true},
   custom: {
-    // autoswagger: {
-    //   typefiles: [],
-    //   swaggerPath: 'doc',
-    //   generateSwaggerOnDeploy: false,
-    // },
     esbuild: {
       bundle: true,
       minify: false,

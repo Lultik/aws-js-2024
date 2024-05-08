@@ -17,7 +17,10 @@ export const basicAuthorizer = (event: APIGatewayTokenAuthorizerEvent, _context:
     const storedUserPassword = process.env[username];
     const effect = !storedUserPassword || storedUserPassword !== password ? 'Deny' : 'Allow';
 
-    const policy = generatePolicy(encodedCreds, event.methodArn, effect);
+    const userId =
+      Buffer.from(authorizationToken, "base64").toString("ascii").split(":")[0] || "";
+
+    const policy = generatePolicy(encodedCreds, event.methodArn, effect, userId);
 
     callback(null, policy);
   } catch (e) {
@@ -25,7 +28,7 @@ export const basicAuthorizer = (event: APIGatewayTokenAuthorizerEvent, _context:
   }
 }
 
-const generatePolicy = (principalId: string, resource: string, effect = 'Deny'): APIGatewayAuthorizerResult => {
+const generatePolicy = (principalId: string, resource: string, effect = 'Deny', userId: string): APIGatewayAuthorizerResult => {
   return {
     principalId,
     policyDocument: {
@@ -37,6 +40,10 @@ const generatePolicy = (principalId: string, resource: string, effect = 'Deny'):
           Resource: resource
         }
       ]
-    }
+    },
+    // @ts-ignore
+    context: {
+      userId,
+    },
   };
 };
